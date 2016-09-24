@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>S3 POST Form</title> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+
+	<body> 
+	        <form action="https://midibucket.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="key" value="${filename}"> 
+			 <input type="hidden" name="acl" value="private"> 
+			 <input type="hidden" name="success_action_redirect" value="https://upload.wikimedia.org/wikipedia/commons/f/ff/Domestic_goat_kid_in_capeweed.jpg">
+			 <input type="hidden" name="Content-Type" value="audio/midi">
+			 <!-- Include any additional input fields here -->
+
+			File to upload to S3: 
+			<input name="file" type="file"> 
+			<br> 
+			<input type="submit" value="Upload File to S3"> 
+		</form> 
+	</body>
+</html>
