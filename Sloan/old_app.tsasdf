@@ -1,0 +1,65 @@
+declare var MidiFile: any, Replayer: any;
+
+var context = new ((<any>window).AudioContext || (<any>window).webkitAudioContext);
+var goatBuffer: any;
+function loadGoatSound(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+
+  // Decode asynchronously
+  request.onload = function() {
+    context.decodeAudioData(request.response, function(buffer) {
+      goatBuffer = buffer;
+    }, () => { console.log('error loading goat noise'); });
+  }
+  request.send();
+}
+
+function beep(note, velocity) {
+    document.body.style.backgroundColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+    var gain = context.createGain();
+    gain.gain.value = velocity/100;
+    var source = context.createBufferSource();
+    source.buffer = goatBuffer;
+    source.playbackRate.value = Math.pow(2, (60-note)/12);
+    source.connect(gain);
+    gain.connect(context.destination);
+    source.start();
+}
+
+function loadRemote(path, callback) {
+    var fetch = new XMLHttpRequest();
+    fetch.open('GET', path);
+    fetch.overrideMimeType("text/plain; charset=x-user-defined");
+    fetch.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            /* munge response into a binary string */
+            var t = this.responseText || "" ;
+            var ff = [];
+            var mx = t.length;
+            var scc= String.fromCharCode;
+            for (var z = 0; z < mx; z++) {
+                ff[z] = scc(t.charCodeAt(z) & 255);
+            }
+            callback(ff.join(""));
+        }
+    }
+    fetch.send();
+}
+
+function play() {
+    loadGoatSound('goats/middle-c.wav');
+    loadRemote('music/simple.mid', function play(data) {
+        if(!goatBuffer) {
+            setTimeout(() => { play(data); }, 100);
+            return;
+        }
+        console.log('loaded');
+        var midiFile = MidiFile(data);
+        var replayer = Replayer(midiFile, beep);
+        replayer.generate(Infinity);
+    });
+}
+
+window.onload = play;

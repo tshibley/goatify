@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>GOATIFY ME</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="goats.css">
+    <script src="goats.js"></script>
+  </head>
+
+	<body> 
+        <h1>Become the Goat DJ You've Always Dreamed You Would Be</h1>
+        <div id="horizontal-scroll">
+            <div class="photobanner">
+            <img class="first" src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Domestic_goat_kid_in_capeweed.jpg" alt="" />
+            <img src="http://www.offthegridnews.com/wp-content/uploads/2015/01/goat-2-gritDOTcom.jpg" alt="" />
+            <img src="http://www.sciencemag.org/sites/default/files/styles/article_main_large/public/images/sn-goats.jpg" alt="" />
+            <img src="https://s-media-cache-ak0.pinimg.com/originals/bb/27/b8/bb27b8ea74547bc25bcf2fcf1db8f2de.jpg" alt="" >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Domestic_goat_kid_in_capeweed.jpg" alt="" />
+            <img src="http://www.offthegridnews.com/wp-content/uploads/2015/01/goat-2-gritDOTcom.jpg" alt="" />
+            <img src="http://www.sciencemag.org/sites/default/files/styles/article_main_large/public/images/sn-goats.jpg" alt="" />
+            <img src="https://s-media-cache-ak0.pinimg.com/originals/bb/27/b8/bb27b8ea74547bc25bcf2fcf1db8f2de.jpg" alt="">
+        </div>
+        </div>
+	    <form action="https://midibucket.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+			<input id="key" type="hidden" name="key" value="${filename}"> 
+			 <input type="hidden" name="acl" value="public-read-write"> 
+			 <input type="hidden" name="success_action_redirect" value="https://upload.wikimedia.org/wikipedia/commons/f/ff/Domestic_goat_kid_in_capeweed.jpg">
+			 <input type="hidden" name="Content-Type" value="audio/midi">
+			 <!-- Include any additional input fields here -->
+
+            <div id="fileinput">
+            <span id="miditext" >Upload MIDI here: </span>
+			<input id="midibutton" name="file" type="file"> 
+            </div>
+			<br> 
+			<input id="submitbutton" type="submit" value="GOATIFY ME">
+		</form>
+        <p>A ridiculous hackathon project by Sloan Nietert, Gordon Zhang, Trevor Shibley, and Cody McKee.</p>
+	</body>
+</html>
