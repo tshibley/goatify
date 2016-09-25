@@ -59,7 +59,7 @@ window.onload = function() {
           draw();
           h += 4;
           h %= 360;
-          //requestAnimationFrame(loop)
+          requestAnimationFrame(loop)
       };
       loop();
     })();
@@ -88,11 +88,12 @@ window.onload = function() {
   //  console.log('huh');
 
     var audio = document.getElementById('audio');
+    audio.crossOrigin = "anonymous";
     audio.src = "https://s3-us-west-2.amazonaws.com/goatmp3bucket/" + mp3Path;
     var ctx = new AudioContext();
     var analyser = ctx.createAnalyser();
-    //var audioSrc = ctx.createMediaElementSource(audio);
-    var audioSrc = ctx.createBufferSource();
+    var audioSrc = ctx.createMediaElementSource(audio);
+    //var audioSrc = ctx.createBufferSource();
     var mrgoat = new Image();
     mrgoat.src = "assets/goat.png";
     // we have to connect the MediaElementSource with the analyser
