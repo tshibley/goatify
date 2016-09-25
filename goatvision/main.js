@@ -63,7 +63,7 @@ window.onload = function() {
       };
       loop();
     })();
-
+    var audioContext = new AudioContext();
 
     var query = window.location.search.substring(1);
     var fileName = query.split('=')[1];
@@ -79,6 +79,7 @@ window.onload = function() {
 	    	audioBuffer = buffer;
 		} );
 	}
+  sleep(5000);
 	request.send();
 
     document.getElementById("download").href="https://s3-us-west-2.amazonaws.com/goatmp3bucket/" + mp3Path;
@@ -86,6 +87,7 @@ window.onload = function() {
   //  console.log('huh');
 
     var audio = document.getElementById('audio');
+    audio.src = "https://s3-us-west-2.amazonaws.com/goatmp3bucket/" + mp3Path;
     var ctx = new AudioContext();
     var analyser = ctx.createAnalyser();
     //var audioSrc = ctx.createMediaElementSource(audio);
