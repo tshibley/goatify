@@ -59,22 +59,37 @@ window.onload = function() {
           draw();
           h += 4;
           h %= 360;
-          requestAnimationFrame(loop)
+          //requestAnimationFrame(loop)
       };
       loop();
     })();
+
+
     var query = window.location.search.substring(1);
     var fileName = query.split('=')[1];
-    var mp3Path = 'music/' + fileName + '.mp3';
+    var mp3Path = fileName + '.mp3';
     //$('#download').attr('href', mp3Path).show();
-    document.getElementById("download").href=mp3Path;
+    var audioBuffer = 0;
+
+    var request = new XMLHttpRequest();
+	  request.open("GET", "https://s3-us-west-2.amazonaws.com/goatmp3bucket/" + mp3Path, true);
+	  request.responseType = "arraybuffer";
+	  request.onload = function() {
+	  audioContext.decodeAudioData( request.response, function(buffer) {
+	    	audioBuffer = buffer;
+		} );
+	}
+	request.send();
+
+    document.getElementById("download").href="https://s3-us-west-2.amazonaws.com/goatmp3bucket/" + mp3Path;
     document.getElementById("download").style.display = "block";
-    console.log('huh');
+  //  console.log('huh');
 
     var audio = document.getElementById('audio');
     var ctx = new AudioContext();
     var analyser = ctx.createAnalyser();
-    var audioSrc = ctx.createMediaElementSource(audio);
+    //var audioSrc = ctx.createMediaElementSource(audio);
+    var audioSrc = ctx.createBufferSource();
     var mrgoat = new Image();
     mrgoat.src = "assets/goat.png";
     // we have to connect the MediaElementSource with the analyser
