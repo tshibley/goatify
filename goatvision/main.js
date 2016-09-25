@@ -79,7 +79,8 @@ window.onload = function() {
 	    	audioBuffer = buffer;
 		} );
 	}
-  sleep(5000);
+  setTimeout(function(){
+}, 5000);
 	request.send();
 
     document.getElementById("download").href="https://s3-us-west-2.amazonaws.com/goatmp3bucket/" + mp3Path;
