@@ -9,6 +9,7 @@ from boto.s3.key import Key
 from pydub import AudioSegment
 import tinys3
 import shutil
+import pprint
 
 
 def to_audio(sf2, midi_file, out_dir, out_type='wav'):
@@ -30,9 +31,11 @@ def processMessage(message):
 
 	s3 = boto.connect_s3(host='s3-us-west-2.amazonaws.com')
 	data = json.loads(message.get_body())
+	print json.dumps(data, indent=4, sort_keys=True)
 
 	s3Bucket = data['Records'][0]['s3']['bucket']['name']
 	fileName = data['Records'][0]['s3']['object']['key']
+	print fileName
 	fileNameArr = fileName.split('.')
 
 	print "Bucket: " + s3Bucket + "    FileName: " +  fileName
@@ -41,14 +44,22 @@ def processMessage(message):
 
 	print tempDir
 
+
+	keyName = ''.join(e for e in fileNameArr[0] if e.isalnum())
+
 	midibucket = s3.get_bucket(s3Bucket)
-	key = midibucket.get_key(fileName)
+
+	for key in midibucket.list():
+		print key; 
+
+
+	key = midibucket.get_key(keyName)
 	key.get_contents_to_filename(tempDir + fileName)
 
 	to_audio("./goat.sf2", tempDir + fileName, tempDir)
 	AudioSegment.from_file(tempDir + fileNameArr[0] + '.wav').export(tempDir + fileNameArr[0] + ".mp3", format="mp3")
 
-	conn = tinys3.Connection(aws_access_key_id,aws_secret_access_key, tls=True, endpoint='s3-us-west-2.amazonaws.com')
+	conn = tinys3.Connection("AKIAJ2PITCT2AMRVLIEA","N9Nvw3q2sTtgfOFTaca1oeXdl3s0L05rNuLLIwVY", tls=True, endpoint='s3-us-west-2.amazonaws.com')
 	f = open(tempDir + fileNameArr[0] + '.mp3','rb')
 	conn.upload(fileNameArr[0] + '.mp3',f, 'goatmp3bucket')
 
